@@ -5,7 +5,7 @@ import json
 import webbrowser
 import os
 import subprocess
-import datetime
+from datetime import datetime
 
 # Initialize the speech recognition and text-to-speech engines
 r = sr.Recognizer()
@@ -16,17 +16,17 @@ def speak(message):
     engine.say(message)
     engine.runAndWait()
 
-# Get the current time and determine whether it's morning, afternoon, or evening
-now = datetime.datetime.now()
-if now.hour < 12:
-    greeting = "Good morning"
-elif now.hour < 18:
-    greeting = "Good afternoon"
+# Get the current time and greet the user accordingly
+now = datetime.now()
+hour = now.hour
+if hour >= 0 and hour < 12:
+    greet = "Good morning"
+elif hour >= 12 and hour < 18:
+    greet = "Good afternoon"
 else:
-    greeting = "Good evening"
+    greet = "Good evening"
 
-# Greet the user
-speak(f"{greeting}, sir")
+speak(f"{greet}, sir. How can I assist you?")
 
 # Main loop
 while True:
@@ -57,9 +57,9 @@ while True:
                     speak("Sorry, I was unable to open the directory in Visual Studio Code.")
             else:
                 speak("Sorry, I didn't understand which directory to open.")
-        elif "htb" in command: # If the command contains "htb"
+        elif "HTB" in command.upper(): # If the command contains "HTB"
             speak("Opening Hack The Box website")
-            webbrowser.open("https://www.hackthebox.com/")
+            webbrowser.open("https://www.hackthebox.com")
         else:
             website = command.replace("open", "").strip()
             speak(f"Opening {website}")
@@ -85,12 +85,8 @@ while True:
         temperature = data["main"]["temp"]
         description = data["weather"][0]["description"]
         speak(f"The temperature in {city} is {temperature} degrees Celsius and the weather is {description}")
-    elif "copy" in command:
-        words = command.replace("copy", "").strip()
-        pyperclip.copy(words) # Copy the words to the clipboard
-        speak("Copied!")
     elif "stop" in command:
         speak("Goodbye!")
         break
     else:
-        if "ChatGpt" in command: # If the command contains
+        speak("Sorry, I didn't understand that command.")
