@@ -1,2 +1,0 @@
-# RFI-PAYLOADS
-RFI
